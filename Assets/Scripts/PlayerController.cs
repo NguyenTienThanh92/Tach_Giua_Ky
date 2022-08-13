@@ -14,26 +14,30 @@ public class PlayerController : MonoBehaviour
     public Slider slider_hp;
     public Text hpTxt;
     private bool item;
+    public int enemyDie;
+    public static PlayerController instance;
 
     private void Awake()
     {
+        if (instance == null) instance = this;
         slider_hp.maxValue = hp;
     }
 
     void Update()
     {
         slider_hp.maxValue = hp;
+        PlaneMove();
+        PlaneShoot();
+        HpUp();
         {
             hpTxt.text = "HP : " + hp.ToString();
         }
-        planeMove();
-        planeShoot();
     }
-    public void planeMove()
+    public void PlaneMove()
     {
+        bodyPlane.up = Vector3.up;
         float horizontal = Input.GetAxis("Horizontal");
         Vector3 direction = new Vector3(horizontal , 0);
-        bodyPlane.up = Vector3.up;
 
         if (direction != Vector3.zero)
         {
@@ -42,7 +46,7 @@ public class PlayerController : MonoBehaviour
         this.gameObject.transform.position += direction * Time.deltaTime * speed;   
     }
 
-    public void planeShoot()
+    public void PlaneShoot()
     {
         if (Input.GetMouseButtonDown(1))
         {
@@ -51,14 +55,27 @@ public class PlayerController : MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "enemy" && item == false)
+        if  (collision.gameObject.tag == "Enemy" && item == false)
         {
             var objectCollisions = collision.GetComponent<BulletController>();
             hp = objectCollisions.CalculateHp(hp);
         }
-        if (collision.gameObject.tag == "item")
+        else if (collision.gameObject.tag == "Item")
         {
             item = true;
         }
     }
+    private void HpUp()
+    {
+        if (enemyDie == 10)
+        {
+            hp += 5;
+            hp = hp += 5;
+        }
+        {
+            hpTxt.text = "HP : " + hp.ToString();
+        }
+
+    }
+
 }

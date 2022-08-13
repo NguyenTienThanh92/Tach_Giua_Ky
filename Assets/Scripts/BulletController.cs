@@ -11,10 +11,10 @@ public class BulletController : MonoBehaviour
 
     private void Update()
     {
-        moveBullet();
+        MoveBullet();
     }
 
-    void moveBullet()
+    void MoveBullet()
     {
         if (time == timeLimit)
         {
@@ -26,7 +26,6 @@ public class BulletController : MonoBehaviour
     public virtual float CalculateHp(float hp)
     {
         var hpLeft = hp - damage;
-        Debug.Log("dame enemy");
         return hpLeft;
     }
     private void OnTriggerEnter2D(Collider2D collision)

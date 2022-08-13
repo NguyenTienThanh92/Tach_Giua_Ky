@@ -16,11 +16,11 @@ public class EnemyController : MonoBehaviour
     }
     void Update()
     {
-        enemyMove();
-        enemyShoot();
+        EnemyMove();
+        EnemyShoot();
     }
 
-    public void enemyMove()
+    public void EnemyMove()
     {
         Vector3 enemyDirection = new Vector3(0, -1);
         this.gameObject.transform.position += enemyDirection * Time.deltaTime * speed;
@@ -31,7 +31,7 @@ public class EnemyController : MonoBehaviour
         }
         time++;
     }
-    private void enemyShoot()
+    private void EnemyShoot()
     {
         if (Random.Range(0, 100) % 5000 == 0)
         {
@@ -46,6 +46,11 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
             GameManager.instance.AddScore();
             RespawnEnemyController.instance.Respawn();
+            if(Random.Range(0,100) % 20 == 0)
+            {
+                ShieldRespawnController.instance.shieldRespawn();
+            }
+            PlayerController.instance.enemyDie++;
         }
     }
 }
